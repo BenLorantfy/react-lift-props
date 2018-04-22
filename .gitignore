@@ -1,0 +1,12 @@
+.vscode
+coverage
+lib
+bundles
+node_modules
+stats.json
+
+# Cruft
+.DS_Store
+*.log
+.idea
+

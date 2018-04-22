@@ -1,0 +1,40 @@
+{
+  "name": "react-lift-props",
+  "version": "0.1.0",
+  "description": "Let's you create a system of deeply nested components",
+  "scripts": {
+    "start": "start-storybook -p 6006",
+    "build": "babel src -d lib --ignore **/__tests__/**,**/_stories.tsx --extensions \".js,.jsx,.ts,.tsx\"",
+    "build:watch": "babel src -w -d lib --ignore **/__tests__/**,**/_stories.tsx --extensions \".js,.jsx,.ts,.tsx\"",
+    "clean": "rm -Rf lib",
+    "test": "NODE_ENV=test jest --coverage",
+    "test:watch": "NODE_ENV=test jest --watchAll --coverage",
+    "lint:fix": "tslint 'src/**/*.{ts,tsx}' --fix",
+    "type-check": "tsc --noEmit"
+  },
+  "main": "index.js",
+  "author": "Ben Lorantfy <ben@lorantfy.com>",
+  "license": "MIT",
+  "private": false,
+  "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.44",
+    "@babel/core": "^7.0.0-beta.44",
+    "@babel/preset-env": "^7.0.0-beta.44",
+    "@babel/preset-react": "^7.0.0-beta.44",
+    "@babel/preset-stage-0": "^7.0.0-beta.44",
+    "@babel/preset-typescript": "^7.0.0-beta.44",
+    "@storybook/addon-actions": "^3.4.2",
+    "@storybook/addon-links": "^3.4.2",
+    "@storybook/react": "^3.4.2",
+    "@types/enzyme": "^3.1.10",
+    "@types/jest": "^22.2.3",
+    "@types/react": "^16.3.12",
+    "babel-core": "^7.0.0-0",
+    "babel-jest": "^22.4.3",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "raf": "^3.4.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2"
+  }
+}
