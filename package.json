@@ -1,6 +1,6 @@
 {
   "name": "react-lift-props",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Let's you create a system of deeply nested components",
   "scripts": {
     "start": "start-storybook -p 6006",
@@ -12,6 +12,11 @@
     "lint:fix": "tslint 'src/**/*.{ts,tsx}' --fix",
     "type-check": "tsc --noEmit"
   },
+  "files": [
+    "lib/**",
+    "README.md",
+    "index.js"
+  ],
   "main": "index.js",
   "author": "Ben Lorantfy <ben@lorantfy.com>",
   "license": "MIT",
