@@ -22,10 +22,12 @@ export function createLifter<T extends object>() {
       // This is a little hacky, but it's the best way I can think of
       // to determine the index this lifter is in the DOM. It also means this
       // will only work with ReactDOM :(
-      const domNodes = document.querySelectorAll('.__react-lift-props-lifter__');
-      const index = [ ...domNodes ].findIndex(domNode => domNode === this.lifterRef.current);
-      this.componentId = this.props.contextValue.registerComponent(index);
-      this.liftProps();
+      if (this.props.contextValue) {
+        const domNodes = document.querySelectorAll('.__react-lift-props-lifter__');
+        const index = [ ...domNodes ].findIndex(domNode => domNode === this.lifterRef.current);
+        this.componentId = this.props.contextValue.registerComponent(index);
+        this.liftProps();
+      }
     }
 
     public componentDidUpdate() {
