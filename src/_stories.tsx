@@ -84,5 +84,8 @@ storiesOf("Stepper", module)
       <Step2 />
       <DynamicStep />
       <ToggleStep />
+      <Step name="Last step">
+        Last step
+      </Step>
     </Stepper>
   ));

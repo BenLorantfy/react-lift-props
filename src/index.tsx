@@ -9,14 +9,22 @@ export function createLifter<T extends object>() {
     contextValue: ILifterContext,
   } & T> { // tslint:disable-line max-classes-per-file
     private componentId = null;
+    constructor(props) {
+      super(props);
+      this.lifterRef = React.createRef();
+    }
 
     public componentWillUnmount() {
       this.removeProps();
     }
 
-
     public componentDidMount() {
-      this.componentId = this.props.contextValue.generateComponentId();
+      // This is a little hacky, but it's the best way I can think of
+      // to determine the index this lifter is in the DOM. It also means this
+      // will only work with ReactDOM :(
+      const domNodes = document.querySelectorAll('.__react-lift-props-lifter__');
+      const index = [ ...domNodes ].findIndex(domNode => domNode === this.lifterRef.current);
+      this.componentId = this.props.contextValue.registerComponent(index);
       this.liftProps();
     }
 
@@ -40,7 +48,7 @@ export function createLifter<T extends object>() {
     }
 
     public render() {
-      return null;
+      return <div className="__react-lift-props-lifter__" ref={this.lifterRef}></div>;
     }
   };
 
@@ -71,15 +79,24 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass) {
       super(props);
 
       this.contextValue = {
-        generateComponentId: this.generateComponentId,
+        registerComponent: this.registerComponent,
         liftProps: this.liftProps,
         removeProps: this.removeProps,
       };
     }
 
-    public generateComponentId = () => {      
-      this.idCounter++;
-      return this.idCounter;
+    public registerComponent = (index: number) => {     
+      const componentId = this.idCounter = this.idCounter + 1; 
+      const newLiftedProps = [ ...this.liftedProps ];
+      this.liftedProps = this.liftedProps;
+      if (newLiftedProps[index]) {
+        newLiftedProps.splice(index, 0, { id: componentId });
+      } else {
+        newLiftedProps.push({ id: componentId });
+      }
+
+      this.liftedProps = newLiftedProps;
+      return componentId;
     }
 
     public removeProps = (id: number) => {
@@ -91,10 +108,8 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass) {
     }
 
     public liftProps = (id: number, props: IAnyObject) => {
-      let placed = false;
       const newLiftedProps = this.liftedProps.map((propsHolder) => {
         if (propsHolder.id === id) {
-          placed = true;
           return {
             id,
             props,
@@ -103,13 +118,6 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass) {
 
         return propsHolder;
       });
-
-      if (!placed) {
-        newLiftedProps.push({
-          id,
-          props,
-        });
-      }
 
       this.liftedProps = newLiftedProps;
       const liftedProps = this.liftedProps.map((propsHolder) => propsHolder.props);
