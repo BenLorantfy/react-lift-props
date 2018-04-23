@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.2] - 2018-04-22
+- Fixed bug with mounting and re-mounting where liftedProps wouldn't respect the order they were placed in the DOM
+
 ## [1.1.1] - 2018-04-22
 - Fixed build
 
