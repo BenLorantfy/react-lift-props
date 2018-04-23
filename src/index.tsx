@@ -8,7 +8,12 @@ export function createLifter<T extends object>() {
   const Lifter = class extends React.PureComponent<{
     contextValue: ILifterContext,
   } & T> { // tslint:disable-line max-classes-per-file
-    public componentId = null;
+    private componentId = null;
+
+    public componentWillUnmount() {
+      this.removeProps();
+    }
+
 
     public componentDidMount() {
       this.componentId = this.props.contextValue.generateComponentId();
@@ -17,6 +22,12 @@ export function createLifter<T extends object>() {
 
     public componentDidUpdate() {
       this.liftProps();
+    }
+
+    public removeProps() {
+      if (this.props.contextValue) {
+        this.props.contextValue.removeProps(this.componentId);
+      }
     }
 
     public liftProps() {
@@ -62,15 +73,24 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass) {
       this.contextValue = {
         generateComponentId: this.generateComponentId,
         liftProps: this.liftProps,
+        removeProps: this.removeProps,
       };
     }
 
-    public generateComponentId = () => {
+    public generateComponentId = () => {      
       this.idCounter++;
       return this.idCounter;
     }
 
-    public liftProps = (id, props) => {
+    public removeProps = (id: number) => {
+      const newLiftedProps = this.liftedProps.filter((propsHolder) => propsHolder.id !== id);
+      const liftedProps = newLiftedProps.map((propsHolder) => propsHolder.props);
+
+      this.liftedProps = newLiftedProps;
+      this.setState({ liftedProps })
+    }
+
+    public liftProps = (id: number, props: IAnyObject) => {
       let placed = false;
       const newLiftedProps = this.liftedProps.map((propsHolder) => {
         if (propsHolder.id === id) {

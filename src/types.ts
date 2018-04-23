@@ -5,4 +5,5 @@ export interface IAnyObject {
 export interface ILifterContext {
   generateComponentId: () => number;
   liftProps: (componentId: number, props: IAnyObject) => void;
+  removeProps: (componentId: number) => void;
 }
