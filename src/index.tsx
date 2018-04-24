@@ -2,7 +2,13 @@ import React from "react";
 import { IAnyObject, ILifterContext } from "./types";
 import { getDisplayName } from "./utils";
 
-const LiftPropsContext = React.createContext<ILifterContext>();
+let LiftPropsContext;
+if (React.createContext) {
+  LiftPropsContext = React.createContext<ILifterContext>();
+} else {
+  console.warn('react-lift-props requires React >= 16.3');
+  LiftPropsContext = {};
+}
 
 export function createLifter<T extends object>() {
   const Lifter = class extends React.PureComponent<{
