@@ -71,6 +71,9 @@ jobs:
       - run:
           name: Run tests
           command: yarn test
+      - run:
+          name: Upload codecov
+          command: bash <(curl -s https://codecov.io/bash) -t 66cc1a02-280c-4b11-a633-1988cc8098dd
   lint:
     <<: *defaults
     steps:
