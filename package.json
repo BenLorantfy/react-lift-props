@@ -10,6 +10,7 @@
     "clean": "rm -Rf lib",
     "test": "NODE_ENV=test jest --coverage",
     "test:watch": "NODE_ENV=test jest --watchAll --coverage",
+    "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint:fix": "tslint 'src/**/*.{ts,tsx}' --fix",
     "type-check": "tsc --noEmit",
     "prepublish": "npm run clean && npm run build"

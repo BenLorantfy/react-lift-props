@@ -1,0 +1,115 @@
+environment: &env
+  CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+  CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+  TZ: "/usr/share/zoneinfo/America/Toronto"
+
+defaults: &defaults
+  working_directory: ~/react-lift-props
+  environment:
+    <<: *env
+  docker:
+    - image: circleci/node:8
+
+version: 2
+jobs:
+  prepare:
+    <<: *defaults
+    steps:
+      - checkout
+      # Restore the dependency cache
+      - restore_cache:
+          key: dep-{{ .Branch }}-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: yarn install
+
+      # Save dependency cache
+      - save_cache:
+          key: dep-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+              - node_modules
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: .
+          # Must be relative path from root
+          paths:
+            - .
+  build:
+    <<: *defaults
+    parallelism: 1
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/workspace
+      - run:
+          name: Prepare to build
+          command: cp -R /tmp/workspace/. .
+      - run:
+          name: Build
+          environment:
+            NODE_ENV: production
+          command: |
+            yarn build
+      - persist_to_workspace:
+          # Must be an absolute path, or relative path from working_directory
+          root: .
+          # Must be relative path from root
+          paths:
+            - lib
+            - index.js
+            - README.md
+            - package.json
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/workspace
+      - run:
+          name: Prepare to test
+          command: cp -R /tmp/workspace/. .
+      - run:
+          name: Run tests
+          command: yarn test
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/workspace
+      - run:
+          name: Prepare to lint
+          command: cp -R /tmp/workspace/. .
+      - run:
+          name: Run Linting
+          command: yarn lint
+  type-check:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/workspace
+      - run:
+          name: Prepare to type check
+          command: cp -R /tmp/workspace/. .
+      - run:
+          name: Run type checking
+          command: yarn type-check
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - prepare
+      - build:
+          requires:
+            - prepare
+      - test:
+          requires:
+            - prepare
+      - lint:
+          requires:
+            - prepare
+      - type-check:
+          requires:
+            - prepare
