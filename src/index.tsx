@@ -6,11 +6,11 @@ let LiftPropsContext;
 if (React.createContext) {
   LiftPropsContext = React.createContext<ILifterContext>();
 } else {
-  console.warn('react-lift-props requires React >= 16.3');
+  console.warn("react-lift-props requires React >= 16.3");
   LiftPropsContext = {};
 }
 
-export function createLifter<T extends object>() {
+export function createLifter<T extends object>(): React.ComponentClass {
   const Lifter = class extends React.PureComponent<{
     contextValue: ILifterContext,
   } & T> { // tslint:disable-line max-classes-per-file
@@ -29,8 +29,8 @@ export function createLifter<T extends object>() {
       // to determine the index this lifter is in the DOM. It also means this
       // will only work with ReactDOM :(
       if (this.props.contextValue) {
-        const domNodes = document.querySelectorAll('.__react-lift-props-lifter__');
-        const index = [ ...domNodes ].findIndex(domNode => domNode === this.lifterRef.current);
+        const domNodes = document.querySelectorAll(".__react-lift-props-lifter__");
+        const index = [ ...domNodes ].findIndex((domNode) => domNode === this.lifterRef.current);
         this.componentId = this.props.contextValue.registerComponent(index);
         this.liftProps();
       }
@@ -73,7 +73,7 @@ export function createLifter<T extends object>() {
   return WrappedLifter;
 }
 
-export function withLiftedProps(UnwrappedComponent: React.ComponentClass) {
+export function withLiftedProps(UnwrappedComponent: React.ComponentClass): React.ComponentClass {
   const WrappedComponent = class extends React.PureComponent<
     IAnyObject,
     { liftedProps: IAnyObject[] }
@@ -93,8 +93,8 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass) {
       };
     }
 
-    public registerComponent = (index: number) => {     
-      const componentId = this.idCounter = this.idCounter + 1; 
+    public registerComponent = (index: number) => {
+      const componentId = this.idCounter = this.idCounter + 1;
       const newLiftedProps = [ ...this.liftedProps ];
       this.liftedProps = this.liftedProps;
       if (newLiftedProps[index]) {
@@ -112,7 +112,7 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass) {
       const liftedProps = newLiftedProps.map((propsHolder) => propsHolder.props);
 
       this.liftedProps = newLiftedProps;
-      this.setState({ liftedProps })
+      this.setState({ liftedProps });
     }
 
     public liftProps = (id: number, props: IAnyObject) => {

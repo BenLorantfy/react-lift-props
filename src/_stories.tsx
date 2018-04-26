@@ -25,39 +25,39 @@ const Stepper = withLiftedProps(class extends React.PureComponent<{ liftedProps:
 });
 
 class DynamicStep extends React.PureComponent {
-  state = { counter: 0 }
-  
-  componentWillMount() {
+  public state = { counter: 0 };
+
+  public componentWillMount() {
     setInterval(() => {
-      this.setState(state => ({ counter: state.counter + 1 }));
+      this.setState((state) => ({ counter: state.counter + 1 }));
     }, 5000);
   }
 
-  render() {
+  public render() {
     return (
       <Step name={`This counter should increase every 4 seconds: ${this.state.counter}`}>
         <span>This shows you can change the step properties</span>
       </Step>
-    )
+    );
   }
 }
 
 class ToggleStep extends React.PureComponent {
-  state = { show: true }
-  
-  componentWillMount() {
+  public state = { show: true };
+
+  public componentWillMount() {
     setInterval(() => {
-      this.setState(state => ({ show: !this.state.show }));
+      this.setState((state) => ({ show: !this.state.show }));
     }, 2000);
   }
 
-  render() {
+  public render() {
     if (this.state.show) {
       return (
         <Step name="This step should appear and disapear every 2 seconds">
           <span>This shows you can mount and unmount steps</span>
         </Step>
-      )
+      );
     }
 
     return null;
@@ -65,12 +65,12 @@ class ToggleStep extends React.PureComponent {
 }
 
 class Step2 extends React.PureComponent {
-  render() {
+  public render() {
     return (
       <Step name="My second step">
         <span>This is the second step. It shows you can encapsulate steps within other components</span>
       </Step>
-    )
+    );
   }
 }
 
