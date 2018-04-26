@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.6] - 2018-04-26
+#### :bug: Bug Fix
+- Removed postinstall script which was causing issues when installing the library
+
 ## [1.1.5] - 2018-04-26
 #### :house: Internal
 - Added more tests. Swapped out enzyme for @benlorantfy/enzyme (for now), so we can test things that use the new React context API

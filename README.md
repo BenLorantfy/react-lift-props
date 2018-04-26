@@ -20,3 +20,7 @@ const MyCoolStep = () => {
 ```
 
 This let's you encapsulate properties of the sub components so that the parent component doesn't need to know about it's details. It also let's you re-use components, group components, and all the other benefits of composition.
+
+## Contributing
+### Setup
+- run `npm run setup`

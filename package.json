@@ -4,6 +4,7 @@
   "description": "Let's you create a system of deeply nested components",
   "scripts": {
     "start": "start-storybook -p 6006",
+    "setup": "rm -Rf node_modules && npm install && mv ./node_modules/@benlorantfy/enzyme-types ./node_modules/@types/benlorantfy__enzyme",
     "build": "babel src -d lib --ignore **/__tests__/**,**/_stories.tsx --extensions \".js,.jsx,.ts,.tsx\"",
     "build:watch": "babel src -w -d lib --ignore **/__tests__/**,**/_stories.tsx --extensions \".js,.jsx,.ts,.tsx\"",
     "clean": "rm -Rf lib",
@@ -11,7 +12,6 @@
     "test:watch": "NODE_ENV=test jest --watchAll --coverage",
     "lint:fix": "tslint 'src/**/*.{ts,tsx}' --fix",
     "type-check": "tsc --noEmit",
-    "postinstall": "mv ./node_modules/@benlorantfy/enzyme-types ./node_modules/@types/benlorantfy__enzyme",
     "prepublish": "npm run clean && npm run build"
   },
   "files": [
