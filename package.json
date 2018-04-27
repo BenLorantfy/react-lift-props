@@ -4,7 +4,8 @@
   "description": "Let's you create a system of deeply nested components",
   "scripts": {
     "start": "start-storybook -p 6006",
-    "setup": "rm -Rf node_modules && npm install && mv ./node_modules/@benlorantfy/enzyme-types ./node_modules/@types/benlorantfy__enzyme",
+    "setup": "rm -Rf node_modules && npm install && npm run move-enzyme-types",
+    "move-enzyme-types": "mv ./node_modules/@benlorantfy/enzyme-types ./node_modules/@types/benlorantfy__enzyme || true",
     "build": "babel src -d lib --ignore **/__tests__/**,**/_stories.tsx --extensions \".js,.jsx,.ts,.tsx\"",
     "build:watch": "babel src -w -d lib --ignore **/__tests__/**,**/_stories.tsx --extensions \".js,.jsx,.ts,.tsx\"",
     "clean": "rm -Rf lib",
