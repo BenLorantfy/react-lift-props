@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.7] - 2018-04-27
+#### :house: Internal
+- Added circle ci script. 
+- Added tests, linting, and type-check. 
+- Improved typings
+
 ## [1.1.6] - 2018-04-26
 #### :bug: Bug Fix
 - Removed postinstall script which was causing issues when installing the library
