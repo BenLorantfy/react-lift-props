@@ -7,3 +7,8 @@ export interface ILifterContext {
   liftProps: (componentId: number, props: IAnyObject) => void;
   removeProps: (componentId: number) => void;
 }
+
+export interface IPropHolder {
+  id: number;
+  props?: IAnyObject;
+}

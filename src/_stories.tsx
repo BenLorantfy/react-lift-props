@@ -11,7 +11,7 @@ interface IStepProps {
   children: any;
 }
 
-const Step = createLifter<IStepProps>();
+const Step = createLifter<IStepProps>({ displayName: "Step" });
 const Stepper = withLiftedProps(class extends React.PureComponent<{ liftedProps: IStepProps[] }> {
   public static displayName = "Stepper";
   public render() {
@@ -26,7 +26,7 @@ const Stepper = withLiftedProps(class extends React.PureComponent<{ liftedProps:
   }
 });
 
-class DynamicStep extends React.PureComponent {
+class DynamicStep extends React.PureComponent<{}, { counter: number }> {
   public state = { counter: 0 };
 
   public componentWillMount() {

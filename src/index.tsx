@@ -1,22 +1,24 @@
 import React from "react";
-import { IAnyObject, ILifterContext } from "./types";
+import LiftPropsContext from "./context";
+import { IAnyObject, ILifterContext, IPropHolder } from "./types";
 import { getDisplayName } from "./utils";
 
-let LiftPropsContext;
-if (React.createContext) {
-  LiftPropsContext = React.createContext<ILifterContext>();
-} else {
-  console.warn("react-lift-props requires React >= 16.3"); // tslint:disable-line no-console
-  LiftPropsContext = {};
+export interface ICreateLifterOptions {
+  displayName?: string;
 }
 
-export function createLifter<T extends object>(): React.ComponentClass {
-  const Lifter = class extends React.PureComponent<{
+export function createLifter<T extends object>(options: ICreateLifterOptions = {}): React.ComponentClass<T> {
+  type Props = {
     contextValue: ILifterContext,
-  } & T> { // tslint:disable-line max-classes-per-file
-    private componentId = null;
-    constructor(props) {
+  } & T;
+
+  const Lifter = class extends React.PureComponent<Props> { // tslint:disable-line max-classes-per-file
+    public static displayName = "Lifter";
+    private componentId: number;
+    private lifterRef: React.RefObject<null>;
+    constructor(props: Props) {
       super(props);
+      this.componentId = -1;
       this.lifterRef = React.createRef();
     }
 
@@ -61,6 +63,7 @@ export function createLifter<T extends object>(): React.ComponentClass {
   };
 
   const WrappedLifter = class extends React.PureComponent<T> { // tslint:disable-line max-classes-per-file
+    public static displayName = options.displayName || "Wrapped(Lifter)";
     public render() {
       return (
         <LiftPropsContext.Consumer>
@@ -73,17 +76,18 @@ export function createLifter<T extends object>(): React.ComponentClass {
   return WrappedLifter;
 }
 
-export function withLiftedProps(UnwrappedComponent: React.ComponentClass): React.ComponentClass {
+export type UnwrappedComponent = React.ComponentClass<IAnyObject & { liftedProps: IAnyObject[] }>;
+export function withLiftedProps(component: UnwrappedComponent): React.ComponentClass {
   const WrappedComponent = class extends React.PureComponent<
     IAnyObject,
     { liftedProps: IAnyObject[] }
   > { // tslint:disable-line max-classes-per-file
-    public static displayName = `withLiftedProps(${getDisplayName(UnwrappedComponent)})`;
+    public static displayName = `withLiftedProps(${getDisplayName(component)})`;
     public idCounter = 0;
-    public liftedProps = [];
-    public contextValue: ILifterContext = null;
+    public liftedProps: IPropHolder[] = [];
+    public contextValue: ILifterContext;
 
-    constructor(props) {
+    constructor(props: IAnyObject) {
       super(props);
 
       this.contextValue = {
@@ -95,7 +99,7 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass): React
 
     public registerComponent = (index: number) => {
       const componentId = this.idCounter = this.idCounter + 1;
-      const newLiftedProps = [ ...this.liftedProps ];
+      const newLiftedProps: IPropHolder[] = [ ...this.liftedProps ];
       this.liftedProps = this.liftedProps;
       if (newLiftedProps[index]) {
         newLiftedProps.splice(index, 0, { id: componentId });
@@ -109,10 +113,8 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass): React
 
     public removeProps = (id: number) => {
       const newLiftedProps = this.liftedProps.filter((propsHolder) => propsHolder.id !== id);
-      const liftedProps = newLiftedProps.map((propsHolder) => propsHolder.props);
-
       this.liftedProps = newLiftedProps;
-      this.setState({ liftedProps });
+      this.updateLiftedProps();
     }
 
     public liftProps = (id: number, props: IAnyObject) => {
@@ -128,7 +130,14 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass): React
       });
 
       this.liftedProps = newLiftedProps;
-      const liftedProps = this.liftedProps.map((propsHolder) => propsHolder.props);
+      this.updateLiftedProps();
+    }
+
+    public updateLiftedProps() {
+      const liftedProps = this.liftedProps
+        .map((propsHolder) => propsHolder.props)
+        .filter(Boolean) as IAnyObject[];
+
       this.setState({ liftedProps });
     }
 
@@ -140,7 +149,7 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass): React
         <LiftPropsContext.Provider value={this.contextValue}>
           {this.props.children}
           {this.state && this.state.liftedProps &&
-            <UnwrappedComponent {...props} liftedProps={this.state.liftedProps} />
+            React.createElement(component, { ...props, liftedProps: this.state.liftedProps })
           }
         </LiftPropsContext.Provider>
       );
