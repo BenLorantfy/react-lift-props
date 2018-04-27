@@ -24,6 +24,10 @@
   "author": "Ben Lorantfy <ben@lorantfy.com>",
   "license": "MIT",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BenLorantfy/react-lift-props"
+  },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.44",
     "@babel/core": "^7.0.0-beta.44",

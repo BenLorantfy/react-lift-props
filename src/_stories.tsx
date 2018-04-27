@@ -1,3 +1,5 @@
+/* tslint:disable max-classes-per-file */
+
 import React from "react";
 
 /** Storybook * */

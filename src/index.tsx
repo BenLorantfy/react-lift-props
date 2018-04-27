@@ -6,7 +6,7 @@ let LiftPropsContext;
 if (React.createContext) {
   LiftPropsContext = React.createContext<ILifterContext>();
 } else {
-  console.warn("react-lift-props requires React >= 16.3");
+  console.warn("react-lift-props requires React >= 16.3"); // tslint:disable-line no-console
   LiftPropsContext = {};
 }
 
@@ -87,8 +87,8 @@ export function withLiftedProps(UnwrappedComponent: React.ComponentClass): React
       super(props);
 
       this.contextValue = {
-        registerComponent: this.registerComponent,
         liftProps: this.liftProps,
+        registerComponent: this.registerComponent,
         removeProps: this.removeProps,
       };
     }

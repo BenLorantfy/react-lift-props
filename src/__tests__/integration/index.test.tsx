@@ -1,3 +1,5 @@
+/* tslint:disable max-classes-per-file */
+
 import { mount } from "@benlorantfy/enzyme";
 import React from "react";
 import { createLifter, withLiftedProps } from "../../index";
