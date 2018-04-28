@@ -34,8 +34,9 @@ export function createLifter<T extends object>(options: ICreateLifterOptions = {
         const domNodes = document.querySelectorAll(".__react-lift-props-lifter__");
         const index = [ ...domNodes ].findIndex((domNode) => domNode === this.lifterRef.current);
         this.componentId = this.props.contextValue.registerComponent(index);
-        this.liftProps();
       }
+
+      this.liftProps();
     }
 
     public componentDidUpdate() {
@@ -100,7 +101,7 @@ export function withLiftedProps(component: UnwrappedComponent): React.ComponentC
     public registerComponent = (index: number) => {
       const componentId = this.idCounter = this.idCounter + 1;
       const newLiftedProps: IPropHolder[] = [ ...this.liftedProps ];
-      this.liftedProps = this.liftedProps;
+
       if (newLiftedProps[index]) {
         newLiftedProps.splice(index, 0, { id: componentId });
       } else {

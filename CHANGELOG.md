@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.1.8] - 2018-04-28
+#### :house: Internal
+- Added more tests
+- Increased code coverage to 100%
+
 ## [1.1.7] - 2018-04-27
 #### :house: Internal
 - Added circle ci script. 
