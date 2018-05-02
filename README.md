@@ -15,12 +15,17 @@ const MyCoolStep = () => {
   return <Step name="my step name" />
 }
 
+...
+
 <Stepper>
   <MyCoolStep />
 </Stepper>
 ```
 
-This let's you encapsulate properties of the sub components so that the parent component doesn't need to know about it's details. It also let's you re-use components, group components, and all the other benefits of composition.
+This let's you encapsulate properties of the sub components so that the parent component doesn't need to know about it's details. It also let's you re-use components, group components, and all the other benefits of composition. For a more in-depth explanation of why this library exists, check out the [medium post](https://medium.com/@benlorantfy/introducing-react-lift-props-490ee7cd958).
+
+## Docs
+- Check out the usage [docs](./docs) here
 
 ## Roadmap
 - Add support for React DOM
