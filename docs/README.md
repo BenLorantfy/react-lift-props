@@ -11,7 +11,7 @@ Injects a prop named `liftedProps` into the component. Each item in the array is
 const Step = createLifter({ displayName: 'Step' });
 const Stepper = withLiftedProps(({ liftedProps }) => (
   <div>
-    {this.props.liftedProps.map((stepProps, idx) => (
+    {liftedProps.map((stepProps, idx) => (
       <div key={stepProps.name}>
         <StepTitle 
           number={idx}
