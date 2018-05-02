@@ -28,7 +28,7 @@ This let's you encapsulate properties of the sub components so that the parent c
 - Check out the usage [docs](./docs) here
 
 ## Roadmap
-- Add support for React DOM
+- Add support for React Native
 - Re-implement using react-call-return once it's more stable, or a [different solution React might introduce](https://twitter.com/dan_abramov/status/987735478672744448). Should be able to do this in a non-breaking way.
 
 ## Contributing
