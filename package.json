@@ -58,5 +58,8 @@
     "sinon": "^4.5.0",
     "tslint": "^5.9.1",
     "typescript": "^2.8.3"
+  },
+  "dependencies": {
+    "hoist-non-react-statics": "^2.5.0"
   }
 }

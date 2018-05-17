@@ -9,8 +9,10 @@ interface IStepProps {
   children: any;
 }
 
+const testStaticMessage = "my test static that should get hoisted";
 const Step = createLifter<IStepProps>();
 const Stepper = withLiftedProps(class extends React.PureComponent<{ liftedProps: IStepProps[] }> {
+  public static testStatic = testStaticMessage;
   public static displayName = "Stepper";
   public render() {
     return <div>
@@ -141,5 +143,9 @@ describe("react-lift-props", () => {
     expect(wrapper.find("h3").length).toEqual(2);
     expect(wrapper.find("h3").at(0).text()).toEqual("1. My first step");
     expect(wrapper.find("h3").at(1).text()).toEqual("2. My second step");
+  });
+
+  it("should hoist statics", () => {
+    expect(Stepper.testStatic).toEqual(testStaticMessage);
   });
 });

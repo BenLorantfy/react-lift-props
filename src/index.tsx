@@ -1,4 +1,6 @@
 import React from "react";
+
+import hoistNonReactStatics from "hoist-non-react-statics";
 import LiftPropsContext from "./context";
 import { IAnyObject, ILifterContext, IPropHolder } from "./types";
 import { getDisplayName } from "./utils";
@@ -157,5 +159,5 @@ export function withLiftedProps(component: UnwrappedComponent): React.ComponentC
     }
   };
 
-  return WrappedComponent;
+  return hoistNonReactStatics(WrappedComponent, component);
 }
