@@ -13,7 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 > - :house:      [Internal]
 > - :nail_care:  [Polish]
 
-## [Unreleased]
+## [1.1.9]
+#### :bug: Bug
+- Changed withLiftedProps to hoist statics from unwrapped component
+
 #### :house: Internal
 - Added docs
 
