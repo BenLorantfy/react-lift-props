@@ -1,6 +1,6 @@
 {
   "name": "react-lift-props",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Let's you create a system of deeply nested components",
   "scripts": {
     "start": "start-storybook -p 6006",
@@ -19,7 +19,8 @@
   "files": [
     "lib/**",
     "README.md",
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
   "main": "index.js",
   "author": "Ben Lorantfy <ben@lorantfy.com>",

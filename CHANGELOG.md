@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 > - :house:      [Internal]
 > - :nail_care:  [Polish]
 
+## [1.2.1]
+#### :bug: Bug
+- Add `index.d.ts` to files in package.jsonm
+
 ## [1.2.0]
 #### :rocket: New Feature
 - Added `extraProps` config option that allows you to add extra props that should be lifted along with the passed in props
