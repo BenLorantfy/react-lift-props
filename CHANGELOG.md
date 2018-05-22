@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 > - :house:      [Internal]
 > - :nail_care:  [Polish]
 
+## [1.2.0]
+#### :rocket: New Feature
+- Added `extraProps` config option that allows you to add extra props that should be lifted along with the passed in props
+- Added `wrapper` config option that will render children directly when set to `true`. Useful when nesting lifters within lifters.
+
 ## [1.1.9]
 #### :bug: Bug
 - Changed withLiftedProps to hoist statics from unwrapped component

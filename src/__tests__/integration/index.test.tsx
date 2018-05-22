@@ -5,23 +5,35 @@ import React from "react";
 import { createLifter, withLiftedProps } from "../../index";
 
 interface IStepProps {
-  name: string;
+  name?: string;
+  super?: boolean;
+  group?: boolean;
   children: any;
 }
 
 const testStaticMessage = "my test static that should get hoisted";
+
+const StepGroup = createLifter<IStepProps>({ wrapper: true, extraProps: { group: true } });
+const SuperStep = createLifter<IStepProps>({ extraProps: { super: true } });
 const Step = createLifter<IStepProps>();
 const Stepper = withLiftedProps(class extends React.PureComponent<{ liftedProps: IStepProps[] }> {
   public static testStatic = testStaticMessage;
   public static displayName = "Stepper";
   public render() {
     return <div>
-      {this.props.liftedProps.map((props, index) => (
-        <div key={props.name}>
-          <h3>{index + 1}. {props.name}</h3>
-          <p>{props.children}</p>
-        </div>
-      ))}
+      {this.props.liftedProps.map((props, index) => {
+        if (props.group) {
+          return <h1 key={props.name}>STEP GROUP</h1>
+        }
+
+        return (
+          <div key={props.name}>
+            {props.super && <h1>SUPER STEP</h1>}
+            {!props.super && <h3>{index + 1}. {props.name}</h3>}
+            <p>{props.children}</p>
+          </div>
+        );
+      })}
     </div>;
   }
 });
@@ -50,6 +62,40 @@ describe("react-lift-props", () => {
 
     expect(wrapper.find("h3").length).toEqual(1);
     expect(wrapper.find("h3").text()).toEqual("1. My First Step");
+  });
+
+  it("should render with super steps", () => {
+    wrapper = render(
+      <Stepper>
+        <SuperStep name="My First Step">
+          <span>My first step content</span>
+        </SuperStep>
+      </Stepper>,
+    );
+
+    expect(wrapper.find("h3").length).toEqual(0);
+    expect(wrapper.find("h1").length).toEqual(1);
+    expect(wrapper.find("h1").text()).toEqual("SUPER STEP");
+  });
+
+  it("should render nested lifters", () => {
+    wrapper = render(
+      <Stepper>
+        <StepGroup name="My Step Group">
+          <Step name="My First Step">
+            <span>My first step content</span>
+          </Step>
+          <Step name="My Second Step">
+            <span>My second step content</span>
+          </Step>
+        </StepGroup>
+        <Step name="My Third Step">
+            <span>My third step content</span>
+          </Step>
+      </Stepper>,
+    );
+
+    expect(wrapper.find("h3").length).toEqual(3);
   });
 
   it("should gracefully handle not being wrapped in Stepper", () => {

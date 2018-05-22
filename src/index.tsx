@@ -7,8 +7,13 @@ import { getDisplayName } from "./utils";
 
 export interface ICreateLifterOptions {
   displayName?: string;
+  wrapper?: boolean;
+  extraProps?: {
+    [key: string]: any;
+  };
 }
 
+const Lifters = ({ children }) => children;
 export function createLifter<T extends object>(options: ICreateLifterOptions = {}): React.ComponentClass<T> {
   type Props = {
     contextValue: ILifterContext,
@@ -69,9 +74,18 @@ export function createLifter<T extends object>(options: ICreateLifterOptions = {
     public static displayName = options.displayName || "Wrapped(Lifter)";
     public render() {
       return (
-        <LiftPropsContext.Consumer>
-          {(contextValue) => <Lifter {...(this.props as T)} contextValue={contextValue}/>}
-        </LiftPropsContext.Consumer>
+        <>
+          <LiftPropsContext.Consumer>
+            {(contextValue) => (
+              <Lifter
+                {...(this.props as T)}
+                {...(options.extraProps)}
+                contextValue={contextValue}
+              />
+            )}
+          </LiftPropsContext.Consumer>
+          {options.wrapper && this.props.children}
+        </>
       );
     }
   };
@@ -150,7 +164,9 @@ export function withLiftedProps(component: UnwrappedComponent): React.ComponentC
 
       return (
         <LiftPropsContext.Provider value={this.contextValue}>
-          {this.props.children}
+          <Lifters>
+            {this.props.children}
+          </Lifters>
           {this.state && this.state.liftedProps &&
             React.createElement(component, { ...props, liftedProps: this.state.liftedProps })
           }
