@@ -27,6 +27,11 @@ This let's you encapsulate properties of the sub components so that the parent c
 ## Docs
 - Check out the usage [docs](./docs) here
 
+## Limitations
+- Does not work in React Native
+- Does not work with non-index keys
+  - Use indexes as keys on lifters and use non-index keys when looping over liftedProps
+
 ## Roadmap
 - Add support for React Native
 - Re-implement using react-call-return once it's more stable, or a [different solution React might introduce](https://twitter.com/dan_abramov/status/987735478672744448). Should be able to do this in a non-breaking way.
