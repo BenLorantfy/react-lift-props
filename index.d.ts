@@ -8,5 +8,5 @@ declare module "react-lift-props" {
   }
 
   export function createLifter<T extends object>(options?: ICreateLifterOptions): React.ComponentClass<T>;
-  export function withLiftedProps<T extends object>(component: React.ComponentClass<T>): React.ComponentClass<T>;
+  export function withLiftedProps<T extends { liftedProps: Array<{ [key: string]: any }> }>(component: React.ComponentClass<T>): React.ComponentClass<Exclude<T, "liftedProps">>;
 }
