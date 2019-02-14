@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 > - :house:      [Internal]
 > - :nail_care:  [Polish]
 
+## [1.5.1]
+#### :house: Internal
+- Upgraded `hoist-non-react-statics`
+
+## [1.4.1]
+#### :bug: Bug
+- Improved typings of `withLiftedProps` so `liftedProps` is not required in returned component
+
 ## [1.2.1]
 #### :bug: Bug
 - Add `index.d.ts` to files in package.jsonm

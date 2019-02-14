@@ -1,6 +1,6 @@
 {
   "name": "react-lift-props",
-  "version": "1.4.1",
+  "version": "1.5.1",
   "description": "Let's you create a system of deeply nested components",
   "scripts": {
     "start": "start-storybook -p 6006",
@@ -61,6 +61,6 @@
     "typescript": "^2.8.3"
   },
   "dependencies": {
-    "hoist-non-react-statics": "^2.5.0"
+    "hoist-non-react-statics": "^3.3.0"
   }
 }
