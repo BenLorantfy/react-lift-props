@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 > - :house:      [Internal]
 > - :nail_care:  [Polish]
 
+## [1.6.0]
+#### :bug: Bug
+- Fixed a bug that could cause props to be lifted in the wrong order. Occurred when using multiple components wrapped by `withLiftedProps` on the same page.
+
 ## [1.5.1]
 #### :house: Internal
 - Upgraded `hoist-non-react-statics`

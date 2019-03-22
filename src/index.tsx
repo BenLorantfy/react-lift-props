@@ -38,7 +38,7 @@ export function createLifter<T extends object>(options: ICreateLifterOptions = {
       // to determine the index this lifter is in the DOM. It also means this
       // will only work with ReactDOM :(
       if (this.props.contextValue) {
-        const domNodes = document.querySelectorAll(".__react-lift-props-lifter__");
+        const domNodes = document.querySelectorAll(`.${this.getClassName()}`);
         const index = [ ...domNodes ].findIndex((domNode) => domNode === this.lifterRef.current);
         this.componentId = this.props.contextValue.registerComponent(index);
       }
@@ -65,8 +65,16 @@ export function createLifter<T extends object>(options: ICreateLifterOptions = {
       }
     }
 
+    public getClassName() {
+      if (this.props.contextValue && this.props.contextValue.id) {
+        return `__react-lift-props-lifter__${this.props.contextValue.id}__`;
+      }
+
+      return `__react-lift-props-lifter__`;
+    }
+
     public render() {
-      return <div className="__react-lift-props-lifter__" ref={this.lifterRef}></div>;
+      return <div className={this.getClassName()} ref={this.lifterRef}></div>;
     }
   };
 
@@ -93,6 +101,7 @@ export function createLifter<T extends object>(options: ICreateLifterOptions = {
   return WrappedLifter;
 }
 
+let parentIdCounter = 0;
 export type UnwrappedComponent = React.ComponentClass<IAnyObject & { liftedProps: IAnyObject[] }>;
 export function withLiftedProps(component: UnwrappedComponent): React.ComponentClass {
   const WrappedComponent = class extends React.PureComponent<
@@ -101,13 +110,16 @@ export function withLiftedProps(component: UnwrappedComponent): React.ComponentC
   > { // tslint:disable-line max-classes-per-file
     public static displayName = `withLiftedProps(${getDisplayName(component)})`;
     public idCounter = 0;
+    public id = 0;
     public liftedProps: IPropHolder[] = [];
     public contextValue: ILifterContext;
 
     constructor(props: IAnyObject) {
       super(props);
+      this.id = parentIdCounter = parentIdCounter + 1;
 
       this.contextValue = {
+        id: this.id,
         liftProps: this.liftProps,
         registerComponent: this.registerComponent,
         removeProps: this.removeProps,

@@ -12,7 +12,7 @@ const mountEl = document.createElement('div');
 mountEl.setAttribute('id', 'app');
 window.document.body.appendChild(mountEl);
 
-const Enzyme = require('@benlorantfy/enzyme');
-const Adapter = require('@benlorantfy/enzyme-adapter-react-16');
+const Enzyme = require('enzyme');
+const Adapter = require('enzyme-adapter-react-16');
 
 Enzyme.configure({ adapter: new Adapter() });

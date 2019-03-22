@@ -3,6 +3,7 @@ export interface IAnyObject {
 }
 
 export interface ILifterContext {
+  id: number;
   registerComponent: (index: number) => number;
   liftProps: (componentId: number, props: IAnyObject) => void;
   removeProps: (componentId: number) => void;

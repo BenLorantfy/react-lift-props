@@ -1,6 +1,6 @@
 /* tslint:disable max-classes-per-file */
 
-import { mount, ReactWrapper } from "@benlorantfy/enzyme";
+import { mount, ReactWrapper } from "enzyme";
 import React from "react";
 import { createLifter, withLiftedProps } from "../../index";
 
@@ -189,6 +189,85 @@ describe("react-lift-props", () => {
     expect(wrapper.find("h3").length).toEqual(2);
     expect(wrapper.find("h3").at(0).text()).toEqual("1. My first step");
     expect(wrapper.find("h3").at(1).text()).toEqual("2. My second step");
+  });
+
+  it("should work with multiple steppers", () => {
+    const TestHarness = class extends React.PureComponent {
+      public render() {
+        return (
+          <>
+            <Stepper>
+              <Step name={"step 1"}>
+                <span>My first step content</span>
+              </Step>
+              <Step name={"step 2"}>
+                <span>My second step content</span>
+              </Step>
+            </Stepper>
+            <Stepper>
+              <Step name={"step 3"}>
+                <span>My first step content</span>
+              </Step>
+              <Step name={"step 4"}>
+                <span>My second step content</span>
+              </Step>
+            </Stepper>
+          </>
+        );
+      }
+    };
+
+    wrapper = render(<TestHarness />);
+
+    expect(wrapper.find("h3").length).toEqual(4);
+    expect(wrapper.find("h3").at(0).text()).toEqual("1. step 1");
+    expect(wrapper.find("h3").at(1).text()).toEqual("2. step 2");
+    expect(wrapper.find("h3").at(2).text()).toEqual("1. step 3");
+    expect(wrapper.find("h3").at(3).text()).toEqual("2. step 4");
+  });
+
+  it("should work with multiple steppers where some steps are encapsulated", () => {
+    class EncapsulatedStep extends React.PureComponent {
+      public render() {
+        return (
+          <Step name={"step 3"}>
+            <span>My first step content</span>
+          </Step>
+        );
+      }
+    }
+
+    const TestHarness = class extends React.PureComponent<{ show?: boolean }> {
+      public render() {
+        return (
+          <>
+            <Stepper>
+              <Step name={"step 1"}>
+                <span>My first step content</span>
+              </Step>
+              <Step name={"step 2"}>
+                <span>My second step content</span>
+              </Step>
+            </Stepper>
+            <Stepper>
+              {this.props.show && <EncapsulatedStep />}
+              <Step name={"step 4"}>
+                <span>My second step content</span>
+              </Step>
+            </Stepper>
+          </>
+        );
+      }
+    };
+
+    wrapper = render(<TestHarness />);
+    wrapper.setProps({ show: true });
+    wrapper.update();
+    expect(wrapper.find("h3").length).toEqual(4);
+    expect(wrapper.find("h3").at(0).text()).toEqual("1. step 1");
+    expect(wrapper.find("h3").at(1).text()).toEqual("2. step 2");
+    expect(wrapper.find("h3").at(2).text()).toEqual("1. step 3");
+    expect(wrapper.find("h3").at(3).text()).toEqual("2. step 4");
   });
 
   it("should hoist statics", () => {
